@@ -1,0 +1,5 @@
+{
+  "name": "Sentinel - Smart Police Incident Tracking",
+  "description": "A mission-critical, real-time emergency response platform for citizens, officers, and administrators.",
+  "requestFramePermissions": ["geolocation"]
+}

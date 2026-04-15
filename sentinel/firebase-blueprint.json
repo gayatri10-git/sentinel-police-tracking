@@ -1,0 +1,88 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile data.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "role": { "type": "string", "enum": ["admin", "officer", "citizen"] },
+        "avatar_url": { "type": "string", "format": "uri" },
+        "created_at": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "email", "role", "created_at"]
+    },
+    "Officer": {
+      "title": "Officer",
+      "description": "Officer tracking data.",
+      "type": "object",
+      "properties": {
+        "user_id": { "type": "string" },
+        "name": { "type": "string" },
+        "badge_number": { "type": "string" },
+        "status": { "type": "string", "enum": ["on_duty", "off_duty", "on_scene"] },
+        "latitude": { "type": "number" },
+        "longitude": { "type": "number" },
+        "current_incident_id": { "type": "string" },
+        "total_resolved": { "type": "integer" },
+        "updated_at": { "type": "string", "format": "date-time" }
+      },
+      "required": ["user_id", "name", "badge_number", "status", "updated_at"]
+    },
+    "Incident": {
+      "title": "Incident",
+      "description": "Incident report details.",
+      "type": "object",
+      "properties": {
+        "type": { "type": "string" },
+        "severity": { "type": "string", "enum": ["low", "medium", "high", "critical"] },
+        "description": { "type": "string" },
+        "photo_url": { "type": "string", "format": "uri" },
+        "ai_summary": { "type": "string" },
+        "ai_tags": { "type": "array", "items": { "type": "string" } },
+        "latitude": { "type": "number" },
+        "longitude": { "type": "number" },
+        "status": { "type": "string", "enum": ["Pending", "Assigned", "In Progress", "Resolved", "False Alarm"] },
+        "assigned_officer_id": { "type": "string" },
+        "assigned_at": { "type": "string", "format": "date-time" },
+        "resolved_at": { "type": "string", "format": "date-time" },
+        "created_at": { "type": "string", "format": "date-time" },
+        "reporter_id": { "type": "string" }
+      },
+      "required": ["type", "severity", "description", "latitude", "longitude", "status", "created_at", "reporter_id"]
+    },
+    "IncidentTimeline": {
+      "title": "IncidentTimeline",
+      "description": "Incident action history.",
+      "type": "object",
+      "properties": {
+        "incident_id": { "type": "string" },
+        "action": { "type": "string" },
+        "actor_name": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["incident_id", "action", "actor_name", "timestamp"]
+    },
+    "Notification": {
+      "title": "Notification",
+      "description": "User notifications.",
+      "type": "object",
+      "properties": {
+        "user_id": { "type": "string" },
+        "message": { "type": "string" },
+        "type": { "type": "string" },
+        "read": { "type": "boolean" },
+        "created_at": { "type": "string", "format": "date-time" }
+      },
+      "required": ["user_id", "message", "type", "read", "created_at"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": { "schema": "User", "description": "User profiles" },
+    "/officers/{officerId}": { "schema": "Officer", "description": "Officer tracking" },
+    "/incidents/{incidentId}": { "schema": "Incident", "description": "Incident reports" },
+    "/incidents/{incidentId}/timeline/{timelineId}": { "schema": "IncidentTimeline", "description": "Incident history" },
+    "/notifications/{notificationId}": { "schema": "Notification", "description": "User notifications" }
+  }
+}
